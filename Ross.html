@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora</title>
+<link rel="stylesheet" href="Ross.css">
+</head>
+<body>
+
+  <main class="app">
+    <section class="calculator" aria-label="Calculadora">
+      <header class="titlebar">
+        <div class="titlebar-left">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="title">Calculadora</span>
+        </div>
+      </header>
+
+      <div class="display" aria-live="polite">
+        <div id="operacion" class="expression">0</div>
+        <div id="numero" class="result">0</div>
+      </div>
+
+      <div class="pad scientific-pad">
+        <button id="btn-limpiar" class="key key-func" type="button" onclick="limpiarTodo()">AC</button>
+        <button id="btn-borrar" class="key key-func" type="button" onclick="borrarUltimo()">DEL</button>
+        <button id="btn-signo" class="key key-func" type="button" onclick="cambiarSigno()">+/-</button>
+        <button id="btn-porcentaje" class="key key-func" type="button" onclick="calcularPorcentaje()">%</button>
+        <button id="btn-raiz" class="key key-func" type="button" onclick="calcularRaiz()">&radic;</button>
+        <button id="btn-cuadrado" class="key key-func" type="button" onclick="calcularCuadrado()">x&sup2;</button>
+        <button id="btn-logaritmo" class="key key-func" type="button" onclick="calcularLogaritmo()">log</button>
+      </div>
+
+      <div class="pad numeric-pad">
+        <button id="btn-7" class="key key-digit" type="button" onclick="escribirNumero('7')">7</button>
+        <button id="btn-8" class="key key-digit" type="button" onclick="escribirNumero('8')">8</button>
+        <button id="btn-9" class="key key-digit" type="button" onclick="escribirNumero('9')">9</button>
+        <button id="btn-division" class="key key-op" type="button" onclick="elegirOperador('/')">&divide;</button>
+        <button id="btn-4" class="key key-digit" type="button" onclick="escribirNumero('4')">4</button>
+        <button id="btn-5" class="key key-digit" type="button" onclick="escribirNumero('5')">5</button>
+        <button id="btn-6" class="key key-digit" type="button" onclick="escribirNumero('6')">6</button>
+        <button id="btn-multiplicacion" class="key key-op" type="button" onclick="elegirOperador('*')">&times;</button>
+        <button id="btn-1" class="key key-digit" type="button" onclick="escribirNumero('1')">1</button>
+        <button id="btn-2" class="key key-digit" type="button" onclick="escribirNumero('2')">2</button>
+        <button id="btn-3" class="key key-digit" type="button" onclick="escribirNumero('3')">3</button>
+        <button id="btn-resta" class="key key-op" type="button" onclick="elegirOperador('-')">&minus;</button>
+        <button id="btn-0" class="key key-digit key-zero" type="button" onclick="escribirNumero('0')">0</button>
+        <button id="btn-punto" class="key key-digit" type="button" onclick="escribirPunto()">.</button>
+        <button id="btn-suma" class="key key-op" type="button" onclick="elegirOperador('+')">+</button>
+        <button class="key key-equals" type="button" onclick="calcularResultado()">=</button>
+      </div>
+    </section>
+  </main>
+
+<script src="Ross.js"></script>
+</body>
+</html>
