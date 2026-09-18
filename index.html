@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bufet de Roble - Reservas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="Rm.css" />
+    <script src="Rm.js" defer></script>
+  </head>
+
+  <body>
+        <div class="container">
+            <header>
+                <div class="header-top">
+                    <div>
+                        <h1>Bufet de Roble - Reservas</h1>
+                        <p class="lead">
+                        Bienvenido al sistema de reservas del Bufet de Roble.
+                        </p>
+                    </div>
+                    <button id="themeToggle" type="button" class="btn Outline theme-toggle">
+                        🌙 Modo oscuro
+                    </button>
+                </div>
+            </header>
+
+            <main class="main">
+                    <section class="panel">
+                        <form id="formReservation">
+                            <label
+                            >Nombre
+                            <input
+                                type="text"
+                                id="name"
+                                placeholder="Ej. Juan Pérez"
+                                required
+                            />
+                            </label>
+
+                            <label
+                            >Contacto (cel o email)
+                            <input type="text" id="contact" placeholder="Ej. 3001234567" />
+                            </label>
+
+                            <label
+                            >Fecha y hora
+                            <input
+                                type="datetime-local"
+                                id="datetime"
+                                step="60"
+                                required
+                            />
+                            </label>
+
+                            <label
+                            >Mesa (número)
+                            <input
+                                type="number"
+                                id="table"
+                                min="1"
+                                max="12"
+                                value="1"
+                                required
+                            />
+                            </label>
+
+                            <label
+                            >Personas
+                            <input
+                                type="number"
+                                id="people"
+                                min="1"
+                                max="20"
+                                value="2"
+                            />
+                            </label>
+
+                            <div class="actions">
+                            <button type="submit" class="btn">Guardar reserva</button>
+                            <button id="clearBtn" type="button" class="btn Outline">
+                                Limpiar formulario
+                            </button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <!-- Mesas -->
+                    <section class="panel">
+                    <h2>Mesas</h2>
+                    <div class="tables-controls">
+                        <input
+                            type="text"
+                            id="searchTables"
+                            placeholder="Buscar por mesa, nombre o contacto..."
+                        />
+                        <select id="filterCapacity">
+                            <option value="">Todas las capacidades</option>
+                            <option value="2">2 personas</option>
+                            <option value="4">4 personas</option>
+                            <option value="6">6 personas</option>
+                            <option value="8">8 personas</option>
+                        </select>
+                    </div>
+                    <div id="tables" class="tables"></div>
+                    </section>
+
+                    <!-- Reporte  Previsualización -->
+                    <section class="panel wide">
+                        <h2>Reporte de reservas</h2>
+
+                        <div class="report-controls">
+                            <label
+                            >Desde
+                            <input type="date" id="fromDate" />
+                            </label>
+
+                            <label
+                            >Hasta
+                            <input type="date" id="toDate" />
+                            </label>
+
+                            <label
+                            >Buscar
+                            <input type="text" id="searchReport" placeholder="Nombre o mesa" />
+                            </label>
+
+                            <label
+                            >Mesa
+                            <select id="filterMesaReport">
+                                <option value="">Todas</option>
+                            </select>
+                            </label>
+
+                            <label
+                            >Ordenar por
+                            <select id="sortReport">
+                                <option value="date-asc">Fecha (más próxima)</option>
+                                <option value="date-desc">Fecha (más reciente)</option>
+                                <option value="table">Mesa</option>
+                            </select>
+                            </label>
+
+                            <button id="btnShowReport" class="btn">Mostrar reporte</button>
+                            <button id="btnPreviewCsv" class="btn Outline">
+                            Previsualizar CSV
+                            </button>
+                            <button id="btnExportCsv" class="btn primary">Exportar CSV</button>
+                            <button id="btnPrintReport" class="btn Outline">Imprimir</button>
+                        </div>
+
+                        <div id="statsBox" class="stats-box"></div>
+                        <div id="reportList" class="report-list"></div>
+                        <div id="reportPagination" class="pagination"></div>
+                        <div id="csvPreviewBox" class="csv-preview-box" hidden>
+                            <div class="csv-preview-header">
+                                <span>Previsualización CSV</span>
+                                <button type="button" id="closeCsvPreview" class="csv-preview-close" aria-label="Cerrar previsualización">×</button>
+                            </div>
+                            <pre id="csvPreview" class="csv-preview"></pre>
+                        </div>
+                    </section>
+            </main>
+        </div>
+
+        <!-- Crear / editar reserva -->
+        <div id="quickReserveModal" class="modal" aria-hidden="true">
+            <div class="modal-content">
+                <h3 id="modalTitle">Reservar mesa <span id="modalMesaTitle"></span></h3>
+                <form id="quickReserveForm">
+                    <input type="hidden" id="modalEditId" value="" />
+
+                    <label>
+                        Nombre
+                        <input type="text" id="modalName" placeholder="Ej. Ana Torres" required />
+                    </label>
+
+                    <label>
+                        Contacto (cel o email)
+                        <input type="text" id="modalContact" placeholder="Ej. 3001234567" />
+                    </label>
+
+                    <label>
+                        Fecha y hora
+                        <input
+                            type="datetime-local"
+                            id="modalDatetime"
+                            step="60"
+                            required
+                        />
+                    </label>
+
+                    <label>
+                        Mesa
+                        <input type="number" id="modalTable" min="1" max="12" readonly required />
+                    </label>
+
+                    <label>
+                        Personas
+                        <input type="number" id="modalPersonas" min="1" max="20" value="2" />
+                    </label>
+
+                    <div class="actions">
+                        <button type="submit" class="btn">Guardar reserva</button>
+                        <button type="button" id="cancelQuickReserve" class="btn Outline">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Historial de mesa -->
+        <div id="historyModal" class="modal" aria-hidden="true">
+            <div class="modal-content modal-wide">
+                <h3>Historial · Mesa <span id="historyMesaTitle"></span></h3>
+                <div id="historyList" class="history-list"></div>
+                <div class="actions">
+                    <button type="button" id="closeHistory" class="btn Outline">Cerrar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmación genérica -->
+        <div id="confirmModal" class="modal" aria-hidden="true">
+            <div class="modal-content">
+                <p id="confirmMessage"></p>
+                <div class="actions">
+                    <button type="button" id="confirmYes" class="btn">Sí, continuar</button>
+                    <button type="button" id="confirmNo" class="btn Outline">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notificaciones -->
+        <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+  </body>
+</html>
